@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">LoupGarouAndroid</string>
+    <string name="main_titre">Bonjour à tous !</string>
+    <string name="lancer_partie">Lancer</string>
+    <string name="main_welcome">Bienvenue dans le Village de Thiercelieux !</string>
+    <string name="todo">TODO</string>
+    <string name="label_nombre">Nombre de joueurs :</string>
+    <string name="valider">Valider</string>
+    <string name="nombre_de_joueurs">Nombre de joueurs :</string>
+    <string name="choix_roles">Choix des rôles à jouer</string>
+    <string name="combien_de_joueurs_utiliseront_ce_r_le">Combien de joueurs utiliseront ce rôle ?</string>
+    <string name="valider_les_r_les">Valider les rôles</string>
+    <string name="jou_dans_cette_partie">Joué ?</string>
+    <string name="non_jou_dans_cette_partie">Non joué</string>
+    <string name="nb">NB</string>
+    <string name="ok">OK</string>
+    <string name="_0">0</string>
+    <string name="attribution_des_noms">Attribution des noms</string>
+    <string-array name="choixNombre">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+    </string-array>
+</resources>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        tools:context=".ChoixCartes">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tV_choix"
+            android:text="@string/choix_roles"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="@dimen/carte_titre_size"
+    />
+
+    <Button
+            android:id="@+id/envoieRoles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/valider_les_r_les"
+            android:textSize="@dimen/carte_titreButton_size"/>
+
+    <ListView android:id="@+id/liste"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              tools:ignore="NestedScrolling"/>
+
+</LinearLayout>

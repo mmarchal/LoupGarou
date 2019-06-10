@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="main_titre_size_bonjour">30sp</dimen>
+    <dimen name="main_titre_size_bienvenue">35sp</dimen>
+    <dimen name="main_titre_size_nombre">25sp</dimen>
+
+    <dimen name="carte_titre_size">25sp</dimen>
+    <dimen name="carte_titreButton_size">15sp</dimen>
+    <dimen name="carte_titreC_size">25sp</dimen>
+    <dimen name="carte_textView_rolesUtilise_size">18sp</dimen>
+    <dimen name="carte_espace">25dp</dimen>
+    <dimen name="carte_width_textview">350dp</dimen>
+
+    <dimen name="attribution_titre">30sp</dimen>
+    <dimen name="attribution_textView">23sp</dimen>
+
+</resources>

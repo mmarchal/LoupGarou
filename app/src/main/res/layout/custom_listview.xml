@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal"
+              android:id="@+id/linear"
+              android:gravity="left|center_vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" tools:ignore="RtlHardcoded,UseCompoundDrawables">
+
+    <ImageView android:id="@+id/listView_image"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginEnd="@dimen/carte_espace"
+               android:contentDescription="@string/todo"/>
+
+    <TextView
+            android:id="@+id/listView_text"
+            android:textAlignment="center"
+            android:textSize="@dimen/carte_titreC_size"
+            android:lines="2"
+            android:layout_width="@dimen/carte_width_textview"
+            android:layout_height="wrap_content" android:gravity="clip_vertical"/>
+
+    <Switch
+            android:id="@+id/simpleSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/jou_dans_cette_partie"
+            tools:ignore="ObsoleteLayoutParam"/>
+
+    <EditText
+            android:id="@+id/editNb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="no"
+            tools:ignore="UnusedAttribute"
+            android:inputType="number"
+            android:text="@string/_0"
+            android:hint="@string/nb" android:textAlignment="center"/>
+
+</LinearLayout>
