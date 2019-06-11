@@ -50,8 +50,8 @@ class MainActivity : AppCompatActivity() {
         nombrePicker.visibility = View.INVISIBLE
         textView_nB.visibility = View.INVISIBLE
 
-        val cartesArrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, listCartes)
-        cartesArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val cartesArray = ArrayAdapter(this, R.layout.custom_spinner, listCartes)
+        cartesArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         dataInLinear = LinearLayout(this)
         val nbJ = (nombrePicker.selectedItem as String).toInt()
         for(count in 0 until nbJ) {
@@ -77,8 +77,8 @@ class MainActivity : AppCompatActivity() {
 
             spinner = Spinner(this)
             spinner.id = count
-            spinner.adapter = cartesArrayAdapter
-            cartesArrayAdapter.notifyDataSetChanged()
+            spinner.adapter = cartesArray
+            cartesArray.notifyDataSetChanged()
 
             listEdit.add(edit)
             listSpinner.add(spinner)

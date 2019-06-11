@@ -3,7 +3,7 @@
 
     <dimen name="main_titre_size_bonjour">25sp</dimen>
     <dimen name="main_titre_size_bienvenue">20sp</dimen>
-    <dimen name="main_titre_size_nombre">16sp</dimen>
+    <dimen name="main_titre_size_nombre">18sp</dimen>
 
     <dimen name="carte_titre_size">20sp</dimen>
     <dimen name="carte_titreButton_size">14sp</dimen>
