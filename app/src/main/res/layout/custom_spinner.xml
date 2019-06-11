@@ -4,6 +4,6 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:textSize="@dimen/main_titre_size_nombre"
-          android:textColor="@android:color/white">
+          android:textColor="@android:color/white" android:textStyle="bold">
 
 </TextView>

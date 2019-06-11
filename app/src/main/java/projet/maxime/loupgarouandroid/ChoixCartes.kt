@@ -83,7 +83,7 @@ class ChoixCartes : AppCompatActivity() {
                     intentC.putStringArrayListExtra("listeNoms", intent.getStringArrayListExtra("listeNoms"))
                     startActivity(intentC)
                 } else {
-                    dialogListeVide()
+                    //dialogListeVide()
                 }
             }
             val dialog = builder.create()
@@ -91,14 +91,6 @@ class ChoixCartes : AppCompatActivity() {
         } catch (e : Exception) {
             Log.e("ErreurChoix", e.message)
         }
-    }
-
-    private fun dialogListeVide() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("ERREUR")
-        builder.setMessage("Liste vide interdite, veuillez choisir des rôles à jouer !")
-        val dialog = builder.create()
-        dialog.show()
     }
 
     private fun initCompo() {

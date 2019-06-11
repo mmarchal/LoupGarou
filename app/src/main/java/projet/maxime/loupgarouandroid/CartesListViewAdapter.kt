@@ -60,9 +60,4 @@ class CartesListViewAdapter(var context : Context, var carte: ArrayList<Carte>, 
     override fun getCount(): Int {
         return carte.count()
     }
-
-    fun getSelectedRoles() {
-
-    }
-
 }

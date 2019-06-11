@@ -3,8 +3,10 @@ package projet.maxime.loupgarouandroid
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,13 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
+import android.widget.TextView
+import android.widget.Spinner
+import org.jetbrains.anko.uiThread
+import android.app.ProgressDialog
+
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,16 +50,17 @@ class MainActivity : AppCompatActivity() {
 
         this.initCompo()
         this.initBDD()
-        this.okButton.setOnClickListener { generateEdit() }
+        val bdd = CartesDB(CartesDbHelper(applicationContext))
+        this.okButton.setOnClickListener { generateEdit(bdd) }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun generateEdit() {
+    private fun generateEdit(bdd: CartesDB) {
         okButton.visibility = View.INVISIBLE
         nombrePicker.visibility = View.INVISIBLE
         textView_nB.visibility = View.INVISIBLE
 
-        val cartesArray = ArrayAdapter(this, R.layout.custom_spinner, listCartes)
+        val cartesArray = ArrayAdapter(this, android.R.layout.simple_spinner_item, listCartes)
         cartesArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         dataInLinear = LinearLayout(this)
         val nbJ = (nombrePicker.selectedItem as String).toInt()
@@ -62,22 +72,32 @@ class MainActivity : AppCompatActivity() {
             textView.id = count
             textView.text = "Joueur n°${count+1}"
             textView.textSize = resources.getDimensionPixelSize(R.dimen.main_titre_size_bienvenue).toFloat() / resources.displayMetrics.density
-            textView.setTextColor(couleur)
+            textView.setTextColor(Color.BLACK)
+            textView.setTypeface(null, Typeface.BOLD)
+            textView.setBackgroundColor(couleur)
+            Police().initTV(applicationContext, textView, R.font.policelg)
 
             edit = EditText(this)
-            edit.hint = "Prénom"
+            edit.hint = "Ecrivez le prénom du joueur"
             edit.id = count
             edit.maxLines = 1
+            edit.setTextColor(Color.BLACK)
+            edit.setBackgroundColor(couleur)
+            edit.setTypeface(null, Typeface.BOLD)
 
             textViewSpinner = TextView(this)
             textViewSpinner.id = count
             textViewSpinner.text = "Rôle : "
             textViewSpinner.textSize = resources.getDimensionPixelSize(R.dimen.main_titre_size_bienvenue).toFloat() / resources.displayMetrics.density
-            textViewSpinner.setTextColor(couleur)
+            textViewSpinner.setTextColor(Color.BLACK)
+            textViewSpinner.setBackgroundColor(couleur)
+            textViewSpinner.setTypeface(null, Typeface.BOLD)
+            Police().initTV(applicationContext, textViewSpinner, R.font.policelg)
 
             spinner = Spinner(this)
             spinner.id = count
             spinner.adapter = cartesArray
+            spinner.setBackgroundColor(couleur)
             cartesArray.notifyDataSetChanged()
 
             listEdit.add(edit)
@@ -96,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         }
         bouton = Button(this)
         bouton.text = resources.getText(R.string.lancer_partie)
-        bouton.setOnClickListener { buttonClicked() }
+        bouton.setOnClickListener { buttonClicked(bdd, nbJ) }
         linearL.addView(bouton)
     }
 
@@ -122,17 +142,44 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun buttonClicked() {
+    private fun buttonClicked(bdd: CartesDB, nbJ: Int) {
+        val dialog = ProgressDialog.show(
+            this@MainActivity, "Loup Garou",
+            "Récupération des données en cours ...", true
+        )
         val jsonA = JSONArray()
-        for(i in 0 until listEdit.size) {
-            val jsonO = JSONObject()
-            jsonO.put("nom", listEdit[i].text.toString())
-            jsonO.put("role", listSpinner[i].selectedItem.toString())
-            jsonA.put(jsonO)
+        for(i in 0..nbJ) {
+            val json = JSONObject()
+            doAsync {
+                val carteByName = bdd.getDatasByName(listSpinner[i].selectedItem.toString())
+                uiThread {
+                    json.put("nom", listEdit[i].text.toString())
+                    json.put("role", listSpinner[i].selectedItem.toString())
+                    json.put("id", carteByName[0].id)
+                    json.put("image", carteByName[0].imageCarte)
+                    json.put("nuit1", carteByName[0].premiereNuit)
+                    json.put("posNuit1", carteByName[0].positionPremiereNuit)
+                    json.put("autresNuits", carteByName[0].nuitSuivante)
+                    json.put("posAutresNuits", carteByName[0].positionNuitSuivante)
+                    jsonA.put(json)
+                    if(i+1==listEdit.size) changeActivity(jsonA)
+                }
+            }
         }
+    }
+
+    private fun changeActivity(jsonA: JSONArray) {
         val intent = Intent(this@MainActivity, Attribution::class.java)
         intent.putExtra("listeNoms", jsonA.toString())
         startActivity(intent)
+    }
+
+    private fun dialogAttente() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("LoupGarou")
+        builder.setMessage("Liste vide interdite, veuillez choisir des rôles à jouer !")
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun initCompo() {
