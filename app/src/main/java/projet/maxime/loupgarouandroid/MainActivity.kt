@@ -21,9 +21,6 @@ import android.widget.Spinner
 import org.jetbrains.anko.uiThread
 import android.app.ProgressDialog
 
-
-
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var textView_titre : TextView
@@ -172,14 +169,6 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this@MainActivity, Attribution::class.java)
         intent.putExtra("listeNoms", jsonA.toString())
         startActivity(intent)
-    }
-
-    private fun dialogAttente() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("LoupGarou")
-        builder.setMessage("Liste vide interdite, veuillez choisir des rôles à jouer !")
-        val dialog = builder.create()
-        dialog.show()
     }
 
     private fun initCompo() {
