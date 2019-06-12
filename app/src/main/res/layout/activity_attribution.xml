@@ -1,11 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/linearLayoutAttribution"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center|center_vertical"
-        android:layout_margin="30dp"
-        android:orientation="vertical"
-        tools:context=".Attribution"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:orientation="vertical"
+              tools:context=".MainActivity">
+
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <ProgressBar
+                android:id="@+id/progressBarSecondary"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:minHeight="150dp"
+                android:padding="8dp"
+                android:minWidth="150dp"
+                android:progressDrawable="@drawable/progress_states" />
+
+        <TextView
+                android:id="@+id/textViewPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="#000" />
+
+        <TextView
+                android:id="@+id/textViewSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_below="@+id/progressBarSecondary"
+                android:textColor="@color/colorPrimaryDark" />
+
+
+    </RelativeLayout>
+
+    <Button
+            android:id="@+id/btnProgressBarSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DETERMINATE SECONDARY PROGRESS BAR"/>
+
+
+</LinearLayout>
