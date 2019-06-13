@@ -1,5 +1,6 @@
 package projet.maxime.loupgarouandroid
 
+import org.json.JSONArray
 import org.json.JSONObject
 
 class Carte {
@@ -7,18 +8,18 @@ class Carte {
     var id : Int? = 0
     var nomCarte : String? = null
     var imageCarte : String? = null
-    var premiereNuit : Boolean? = null
+    var premiereNuit : Int = 0
     var positionPremiereNuit : Int = 0
-    var nuitSuivante : Boolean? = null
+    var nuitSuivante : Int = 0
     var positionNuitSuivante : Int = 0
 
     constructor(
         id: Int?,
         nomCarte: String?,
         imageCarte: String?,
-        premiereNuit: Boolean?,
+        premiereNuit: Int,
         positionPremiereNuit: Int,
-        nuitSuivante: Boolean?,
+        nuitSuivante: Int,
         positionNuitSuivante: Int
     ) {
         this.id = id

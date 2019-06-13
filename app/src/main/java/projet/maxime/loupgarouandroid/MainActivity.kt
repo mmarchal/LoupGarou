@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +19,9 @@ import android.widget.TextView
 import android.widget.Spinner
 import org.jetbrains.anko.uiThread
 import android.app.ProgressDialog
+import android.provider.ContactsContract
+import android.util.Log
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,19 +42,22 @@ class MainActivity : AppCompatActivity() {
 
     private var listCartes : ArrayList<String> = arrayListOf("L Ancien", "Le Chasseur", "Cupidon", "Le Loup Garou Blanc","Le Loup Garou",
                                                              "Le Renard", "Le Salvateur","La Sorcière","Le Simple Villageois","La Voyante")
+    lateinit var database : Database
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        database = Database(applicationContext)
+
         this.initCompo()
-        this.initBDD()
-        val bdd = CartesDB(CartesDbHelper(applicationContext))
-        this.okButton.setOnClickListener { generateEdit(bdd) }
+        this.initDatabase(database)
+        this.okButton.setOnClickListener { generateEdit() }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun generateEdit(bdd: CartesDB) {
+    private fun generateEdit() {
         okButton.visibility = View.INVISIBLE
         nombrePicker.visibility = View.INVISIBLE
         textView_nB.visibility = View.INVISIBLE
@@ -113,59 +118,54 @@ class MainActivity : AppCompatActivity() {
         }
         bouton = Button(this)
         bouton.text = resources.getText(R.string.lancer_partie)
-        bouton.setOnClickListener { buttonClicked(bdd, nbJ) }
+        bouton.setOnClickListener { buttonClicked(nbJ) }
         linearL.addView(bouton)
     }
 
-    private fun initBDD() {
-        val carteDb by lazy { CartesDB(CartesDbHelper(applicationContext)) }
-        carteDb.deleteAll()
-        if (carteDb.requestCartes().isEmpty()) {
-            doAsync {
-                carteDb.saveCarte(Carte(null, "L Ancien", "https://maxping.alwaysdata.net/cartesLG/ancien.jpg", false, 0, false, 0))
-                //carteDb.saveCarte(Carte(null, "Le Juge Begue", "https://maxping.alwaysdata.net/cartesLG/begue.jpg", true, 7, false, 0))
-                carteDb.saveCarte(Carte(null, "Le Chasseur", "https://maxping.alwaysdata.net/cartesLG/chasseur.jpg", false, 0, false, 0))
-                //carteDb.saveCarte(Carte(null, "Le Chien Loup", "https://maxping.alwaysdata.net/cartesLG/chien_loup.jpg", true, 15, true, 7))
-                carteDb.saveCarte(Carte(null, "Cupidon", "https://maxping.alwaysdata.net/cartesLG/cupidon.jpg", true, 3, false, 0))
-                carteDb.saveCarte(Carte(null, "Le Loup Garou Blanc", "https://maxping.alwaysdata.net/cartesLG/loup_blanc.jpg", true, 15, true, 9))
-                carteDb.saveCarte(Carte(null, "Le Loup Garou", "https://maxping.alwaysdata.net/cartesLG/loup_garou.jpg", true, 15, true, 7))
-                carteDb.saveCarte(Carte(null, "Le Renard", "https://maxping.alwaysdata.net/cartesLG/renard.jpg", true, 5, true, 3))
-                carteDb.saveCarte(Carte(null, "Le Salvateur", "https://maxping.alwaysdata.net/cartesLG/salvateur.jpg", true, 14, true, 6))
-                //carteDb.saveCarte(Carte(null, "La Servante Dévouée", "https://maxping.alwaysdata.net/cartesLG/servante.jpg", false, 0, false, 0))
-                carteDb.saveCarte(Carte(null, "La Sorcière", "https://maxping.alwaysdata.net/cartesLG/sorciere.jpg", true, 19, true, 12))
-                carteDb.saveCarte(Carte(null, "Le Simple Villageois", "https://maxping.alwaysdata.net/cartesLG/villageois.jpg", false, 0, false, 0))
-                carteDb.saveCarte(Carte(null, "La Voyante", "https://maxping.alwaysdata.net/cartesLG/voyante.jpg", true, 4, true, 2))
-            }
-        }
+    private fun initDatabase(database: Database) {
+        database.deleteAll()
+        database.saveCarte(Carte(null, "L Ancien", "https://maxping.alwaysdata.net/cartesLG/ancien.jpg", 0, 0, 0, 0))
+        database.saveCarte(Carte(null, "Le Chasseur", "https://maxping.alwaysdata.net/cartesLG/chasseur.jpg", 0, 0, 0, 0))
+        database.saveCarte(Carte(null, "Cupidon", "https://maxping.alwaysdata.net/cartesLG/cupidon.jpg", 1, 3, 0, 0))
+        database.saveCarte(Carte(null, "Le Loup Garou Blanc", "https://maxping.alwaysdata.net/cartesLG/loup_blanc.jpg", 1, 15, 1, 9))
+        database.saveCarte(Carte(null, "Le Loup Garou", "https://maxping.alwaysdata.net/cartesLG/loup_garou.jpg", 1, 15, 1, 7))
+        database.saveCarte(Carte(null, "Le Renard", "https://maxping.alwaysdata.net/cartesLG/renard.jpg", 1, 5, 1, 3))
+        database.saveCarte(Carte(null, "Le Salvateur", "https://maxping.alwaysdata.net/cartesLG/salvateur.jpg", 1, 14, 1, 6))
+        database.saveCarte(Carte(null, "La Sorcière", "https://maxping.alwaysdata.net/cartesLG/sorciere.jpg", 1, 19, 1, 12))
+        database.saveCarte(Carte(null, "Le Simple Villageois", "https://maxping.alwaysdata.net/cartesLG/villageois.jpg", 0, 0, 0, 0))
+        database.saveCarte(Carte(null, "La Voyante", "https://maxping.alwaysdata.net/cartesLG/voyante.jpg", 1, 4, 1, 2))
     }
 
-    private fun buttonClicked(bdd: CartesDB, nbJ: Int) {
+    private fun buttonClicked(nbJ: Int) {
         val dialog = ProgressDialog.show(
             this@MainActivity, "Loup Garou",
             "Récupération des données en cours ...", true
         )
         val jsonA = JSONArray()
-        for(i in 0..nbJ) {
-            val json = JSONObject()
-            doAsync {
-                val carteByName = bdd.getDatasByName(listSpinner[i].selectedItem.toString())
-                uiThread {
+        try {
+            for(i in 0..nbJ) {
+                val json = JSONObject()
+                val info = database.getCartesByName(listSpinner[i].selectedItem.toString())
+                info.forEach{ carte ->
                     json.put("nom", listEdit[i].text.toString())
                     json.put("role", listSpinner[i].selectedItem.toString())
-                    json.put("id", carteByName[0].id)
-                    json.put("image", carteByName[0].imageCarte)
-                    json.put("nuit1", carteByName[0].premiereNuit)
-                    json.put("posNuit1", carteByName[0].positionPremiereNuit)
-                    json.put("autresNuits", carteByName[0].nuitSuivante)
-                    json.put("posAutresNuits", carteByName[0].positionNuitSuivante)
+                    json.put("id", carte.id)
+                    json.put("image", carte.imageCarte)
+                    json.put("nuit1", carte.premiereNuit)
+                    json.put("posNuit1", carte.positionPremiereNuit)
+                    json.put("autresNuits", carte.nuitSuivante)
+                    json.put("posAutresNuits", carte.positionNuitSuivante)
                     jsonA.put(json)
                     if(i+1==listEdit.size) changeActivity(jsonA)
                 }
             }
+        } catch (e: Exception) {
+            Log.e("ErreurMain", e.message)
         }
     }
 
     private fun changeActivity(jsonA: JSONArray) {
+        Log.d("VerifMain", jsonA.toString())
         val intent = Intent(this@MainActivity, Attribution::class.java)
         intent.putExtra("listeNoms", jsonA.toString())
         startActivity(intent)

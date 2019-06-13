@@ -19,9 +19,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:minHeight="150dp"
+                android:minHeight="500dp"
                 android:padding="8dp"
-                android:minWidth="150dp"
+                android:minWidth="500dp"
                 android:progressDrawable="@drawable/progress_states" />
 
         <TextView
@@ -29,24 +29,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="#000" />
+                android:textAlignment="center"
+                android:textSize="40sp"
+                android:textColor="#000"/>
 
         <TextView
                 android:id="@+id/textViewSecondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="100dp"
+                android:textSize="25sp"
+                android:textAlignment="center"
                 android:layout_below="@+id/progressBarSecondary"
-                android:textColor="@color/colorPrimaryDark" />
+                android:textColor="@color/colorPrimaryDark" android:gravity="clip_horizontal"/>
 
 
     </RelativeLayout>
-
-    <Button
-            android:id="@+id/btnProgressBarSecondary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DETERMINATE SECONDARY PROGRESS BAR"/>
 
 
 </LinearLayout>
