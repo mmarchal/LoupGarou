@@ -1,6 +1,7 @@
 package projet.maxime.loupgarouandroid
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -14,8 +15,7 @@ import java.lang.Exception
 class Attribution : AppCompatActivity() {
 
     private var listeCartes = arrayListOf<Jeu>()
-    private var listeTrierPremier : MutableList<Pair<String?, Int>> = mutableListOf()
-    private var listeTrierAutre : MutableList<Pair<String?, Int>> = mutableListOf()
+    private var listeTrier : MutableList<Pair<String?, Int>> = mutableListOf()
 
     var secondaryHandler: Handler? = Handler()
     var primaryProgressStatus = 0
@@ -38,18 +38,15 @@ class Attribution : AppCompatActivity() {
             while (primaryProgressStatus < 100) {
 
                 val listeCarteVide = listeCartes.isEmpty()
-                val listeTrierVidePremier = listeTrierPremier.isEmpty()
-                val listeTrierVideAutres = listeTrierAutre.isEmpty()
+                val listeTrierVidePremier = listeTrier.isEmpty()
 
                 try {
                     Thread.sleep(1000)
+                    if(listeCarteVide) listeCartes = this.jsonToJeu(jsonArray)
+                    if(!listeCarteVide && listeTrierVidePremier) listeTrier = this.triOrdreNuit(listeCartes)
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 }
-
-                if(listeCarteVide) listeCartes = this.jsonToJeu(jsonArray)
-                if(!listeCarteVide && listeTrierVidePremier) listeTrierPremier = this.triOrdrePremiereNuit(listeCartes)
-                if(!listeCarteVide && !listeTrierVidePremier && listeTrierVideAutres) listeTrierAutre = this.triOrdreAutresNuit(listeCartes)
 
                 secondaryHandler?.post {
                     progressBarSecondary.progress = primaryProgressStatus
@@ -58,7 +55,13 @@ class Attribution : AppCompatActivity() {
                     if (primaryProgressStatus == 100) {
                         progressBar.visibility = View.INVISIBLE
                         textViewPrimary.text = "Tâches effectués !"
-                        
+                        try {
+                            Thread.sleep(1000)
+                        } catch (e : InterruptedException) {
+                            e.printStackTrace()
+                        } finally {
+                            startActivity(Intent(this@Attribution, Nuit::class.java))
+                        }
                     }
                 }
             }
@@ -71,61 +74,41 @@ class Attribution : AppCompatActivity() {
         try {
             for(i in 0..longueur) {
                 val json = jsonArray[i] as JSONObject
-                val reveilPremiereNuit = json.getInt("nuit1") != 0
-                val posPremiereNuit = json.getInt("posNuit1")
-                val reveilAutresNuits = json.getInt("autresNuits") != 0
-                val posAutresNuits = json.getInt("posAutresNuits")
-                val mapPremiere = mapOf(reveilPremiereNuit to posPremiereNuit)
-                val mapAutres = mapOf(reveilAutresNuits to posAutresNuits)
-                val jeu = Jeu(json.getString("nom"), json.getString("role"), mapPremiere, mapAutres)
+                val reveilPremiereNuit = json.getInt("nuit") != 0
+                val posPremiereNuit = json.getInt("posNuit")
+                val mapNuit = mapOf(reveilPremiereNuit to posPremiereNuit)
+                val jeu = Jeu(json.getString("nom"), json.getString("role"), json.getString("image"), mapNuit)
                 liste.add(jeu)
             }
         } catch (e : Exception) {
             Log.e("ErreurAttribution", e.message)
         } finally {
-            primaryProgressStatus+=33
+            primaryProgressStatus+=50
             return liste
         }
     }
 
-    private fun triOrdrePremiereNuit(list: ArrayList<Jeu>): MutableList<Pair<String?, Int>> {
+    private fun triOrdreNuit(list: ArrayList<Jeu>): MutableList<Pair<String?, Int>> {
 
         val map: MutableList<Pair<String?, Int>> = mutableListOf()
 
         try {
             for(i in 0..list.size) {
-                for (data in list[i].premiereNuit) {
-                    if(data.key) map.add(("${list[i].nomJoueur}/${list[i].carteJoueur}" to data.value))
+                for (data in list[i].nuit) {
+                    if(data.key) map.add(("${list[i].nomJoueur}>${list[i].carteJoueur}>${list[i].imageJoueur}" to data.value))
                 }
             }
-
         } catch (e : Exception) {
             Log.e("VerifErreurAttribution", e.message)
         } finally {
             map.sortBy{ it.second }
-            primaryProgressStatus+=33
-            return map
-        }
-
-    }
-
-    private fun triOrdreAutresNuit(list : ArrayList<Jeu>) : MutableList<Pair<String?, Int>> {
-        val map: MutableList<Pair<String?, Int>> = mutableListOf()
-
-        try {
-            for(i in 0..list.size) {
-                for (data in list[i].nuitSuivante) {
-                    if(data.key) map.add(("${list[i].nomJoueur}/${list[i].carteJoueur}" to data.value))
-                }
+            SharedPreferencesUtils(applicationContext).save("Taille", map.size)
+            map.forEachIndexed { index, element ->
+                SharedPreferencesUtils(applicationContext).save(index.toString(), element.first.toString())
             }
-
-        } catch (e : Exception) {
-            Log.e("VerifErreurAttribution", e.message)
-        } finally {
-            map.sortBy{ it.second }
-            primaryProgressStatus+=34
-            return map
+            primaryProgressStatus+=50
         }
+        return map
     }
 
     private fun initCompo() {

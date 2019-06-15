@@ -1,9 +1,9 @@
 package projet.maxime.loupgarouandroid
 
-class Jeu(nom: String, carte: String, pN: Map<Boolean, Int>, nS: Map<Boolean, Int>) {
+class Jeu(nom: String, carte: String, image : String, pN: Map<Boolean, Int>) {
     var nomJoueur : String? = nom
     var carteJoueur : String? = carte
-    var premiereNuit : Map<Boolean, Int> = pN
-    var nuitSuivante : Map<Boolean, Int> = nS
+    var imageJoueur : String? = image
+    var nuit : Map<Boolean, Int> = pN
 
 }

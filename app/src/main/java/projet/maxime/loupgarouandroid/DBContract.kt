@@ -10,10 +10,8 @@ object DBContract {
             val COLUMN_ID = "_id"
             val COLUMN_NAME = "nomCarte"
             val COLUMN_IMAGE = "imageCarte"
-            val COLUMN_PREMIERE_NUIT = "premiereNuit"
-            val COLUMN_POS_PREMIERE_NUIT = "positionPremiereNuit"
-            val COLUMN_NUIT_SUIVANTE = "nuitSuivante"
-            val COLUMN_POS_NUIT_SUIVANTE = "positionNuitSuivante"
+            val COLUMN_NUIT = "nuit"
+            val COLUMN_POS_NUIT = "positionNuit"
         }
     }
 }

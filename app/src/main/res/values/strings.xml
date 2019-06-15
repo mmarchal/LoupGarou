@@ -16,6 +16,10 @@
     <string name="ok">OK</string>
     <string name="_0">0</string>
     <string name="attribution_des_noms">Attribution des noms</string>
+    <string name="nuit_n">Nuit n°</string>
+    <string name="nom_du_joueur">Nom du joueur</string>
+    <string name="nom_de_la_carte">Nom de la carte</string>
+    <string name="le_personnage_a_jou">Le personnage a joué</string>
     <string-array name="choixNombre">
         <item>1</item>
         <item>2</item>

@@ -40,8 +40,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textViewSpinner : TextView
     private lateinit var spinner : Spinner
 
-    private var listCartes : ArrayList<String> = arrayListOf("L Ancien", "Le Chasseur", "Cupidon", "Le Loup Garou Blanc","Le Loup Garou",
-                                                             "Le Renard", "Le Salvateur","La Sorcière","Le Simple Villageois","La Voyante")
+    private var listCartes : ArrayList<String> = arrayListOf(/*"Cupidon", "Le Loup Garou Blanc",*/"L Ancien", "Le Chasseur", "Le Loup Garou",
+                                                             /*"Le Renard",*/ "Le Salvateur","La Sorcière","Le Simple Villageois","La Voyante")
     lateinit var database : Database
 
 
@@ -124,16 +124,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun initDatabase(database: Database) {
         database.deleteAll()
-        database.saveCarte(Carte(null, "L Ancien", "https://maxping.alwaysdata.net/cartesLG/ancien.jpg", 0, 0, 0, 0))
-        database.saveCarte(Carte(null, "Le Chasseur", "https://maxping.alwaysdata.net/cartesLG/chasseur.jpg", 0, 0, 0, 0))
-        database.saveCarte(Carte(null, "Cupidon", "https://maxping.alwaysdata.net/cartesLG/cupidon.jpg", 1, 3, 0, 0))
-        database.saveCarte(Carte(null, "Le Loup Garou Blanc", "https://maxping.alwaysdata.net/cartesLG/loup_blanc.jpg", 1, 15, 1, 9))
-        database.saveCarte(Carte(null, "Le Loup Garou", "https://maxping.alwaysdata.net/cartesLG/loup_garou.jpg", 1, 15, 1, 7))
-        database.saveCarte(Carte(null, "Le Renard", "https://maxping.alwaysdata.net/cartesLG/renard.jpg", 1, 5, 1, 3))
-        database.saveCarte(Carte(null, "Le Salvateur", "https://maxping.alwaysdata.net/cartesLG/salvateur.jpg", 1, 14, 1, 6))
-        database.saveCarte(Carte(null, "La Sorcière", "https://maxping.alwaysdata.net/cartesLG/sorciere.jpg", 1, 19, 1, 12))
-        database.saveCarte(Carte(null, "Le Simple Villageois", "https://maxping.alwaysdata.net/cartesLG/villageois.jpg", 0, 0, 0, 0))
-        database.saveCarte(Carte(null, "La Voyante", "https://maxping.alwaysdata.net/cartesLG/voyante.jpg", 1, 4, 1, 2))
+        database.saveCarte(Carte(null, "L Ancien", "https://maxping.alwaysdata.net/cartesLG/ancien.jpg", 0, 0))
+        database.saveCarte(Carte(null, "Le Chasseur", "https://maxping.alwaysdata.net/cartesLG/chasseur.jpg", 0, 0))
+        //database.saveCarte(Carte(null, "Cupidon", "https://maxping.alwaysdata.net/cartesLG/cupidon.jpg", 1, 3, 0, 0))
+        //database.saveCarte(Carte(null, "Le Loup Garou Blanc", "https://maxping.alwaysdata.net/cartesLG/loup_blanc.jpg", 1, 15, 1, 9))
+        database.saveCarte(Carte(null, "Le Loup Garou", "https://maxping.alwaysdata.net/cartesLG/loup_garou.jpg", 1, 15))
+        //database.saveCarte(Carte(null, "Le Renard", "https://maxping.alwaysdata.net/cartesLG/renard.jpg", 1, 5, 1, 3))
+        database.saveCarte(Carte(null, "Le Salvateur", "https://maxping.alwaysdata.net/cartesLG/salvateur.jpg", 1, 14))
+        database.saveCarte(Carte(null, "La Sorcière", "https://maxping.alwaysdata.net/cartesLG/sorciere.jpg", 1, 19))
+        database.saveCarte(Carte(null, "Le Simple Villageois", "https://maxping.alwaysdata.net/cartesLG/villageois.jpg", 0, 0))
+        database.saveCarte(Carte(null, "La Voyante", "https://maxping.alwaysdata.net/cartesLG/voyante.jpg", 1, 4))
     }
 
     private fun buttonClicked(nbJ: Int) {
@@ -151,10 +151,8 @@ class MainActivity : AppCompatActivity() {
                     json.put("role", listSpinner[i].selectedItem.toString())
                     json.put("id", carte.id)
                     json.put("image", carte.imageCarte)
-                    json.put("nuit1", carte.premiereNuit)
-                    json.put("posNuit1", carte.positionPremiereNuit)
-                    json.put("autresNuits", carte.nuitSuivante)
-                    json.put("posAutresNuits", carte.positionNuitSuivante)
+                    json.put("nuit", carte.nuit)
+                    json.put("posNuit", carte.positionNuit)
                     jsonA.put(json)
                     if(i+1==listEdit.size) changeActivity(jsonA)
                 }

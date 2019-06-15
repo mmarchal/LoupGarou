@@ -52,6 +52,11 @@ class SharedPreferencesUtils (val context: Context) {
 
     }
 
+    fun isSaved(string1 : String) : Boolean {
+        val data = sharedPref.getString(string1, null)
+        return !data?.isEmpty()!!
+    }
+
     fun clearSharedPreference() {
 
         val editor: SharedPreferences.Editor = sharedPref.edit()

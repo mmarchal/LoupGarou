@@ -7,10 +7,12 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 
 class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_CREATE_ENTRIES)
+        Log.d("Database", "CREER")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -41,10 +43,8 @@ class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         values.put(DBContract.UserEntry.COLUMN_ID, carte.id)
         values.put(DBContract.UserEntry.COLUMN_NAME, carte.nomCarte)
         values.put(DBContract.UserEntry.COLUMN_IMAGE, carte.imageCarte)
-        values.put(DBContract.UserEntry.COLUMN_PREMIERE_NUIT,  carte.premiereNuit)
-        values.put(DBContract.UserEntry.COLUMN_POS_PREMIERE_NUIT, carte.positionPremiereNuit)
-        values.put(DBContract.UserEntry.COLUMN_NUIT_SUIVANTE,  carte.nuitSuivante)
-        values.put(DBContract.UserEntry.COLUMN_POS_NUIT_SUIVANTE, carte.positionNuitSuivante)
+        values.put(DBContract.UserEntry.COLUMN_NUIT,  carte.nuit)
+        values.put(DBContract.UserEntry.COLUMN_POS_NUIT, carte.positionNuit)
 
         // Insert the new row, returning the primary key value of the new row
         val newRowId = db.insert(DBContract.UserEntry.TABLE_NAME, null, values)
@@ -82,20 +82,16 @@ class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         var image: String
         var firstNight : Int
         var posFirstNight : Int
-        var othersNights : Int
-        var posOthersNights : Int
         if (cursor!!.moveToFirst()) {
-            while (cursor.isAfterLast == false) {
+            while (!cursor.isAfterLast) {
 
                 id = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_ID))
                 name = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_NAME))
                 image = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_IMAGE))
-                firstNight = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_PREMIERE_NUIT))
-                posFirstNight = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_POS_PREMIERE_NUIT))
-                othersNights= cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_NUIT_SUIVANTE))
-                posOthersNights = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_POS_NUIT_SUIVANTE))
+                firstNight = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_NUIT))
+                posFirstNight = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_POS_NUIT))
 
-                users.add(Carte(id, name, image, firstNight, posFirstNight, othersNights, posOthersNights))
+                users.add(Carte(id, name, image, firstNight, posFirstNight))
                 cursor.moveToNext()
             }
         }
@@ -118,19 +114,15 @@ class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         var image: String
         var firstNight : Int
         var posFirstNight : Int
-        var othersNights : Int
-        var posOthersNights : Int
 
         if (cursor!!.moveToFirst()) {
-            while (cursor.isAfterLast == false) {
+            while (!cursor.isAfterLast) {
                 userid = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_ID))
                 name = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_NAME))
                 image = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_IMAGE))
-                firstNight = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_PREMIERE_NUIT))
-                posFirstNight = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_POS_PREMIERE_NUIT))
-                othersNights= cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_NUIT_SUIVANTE))
-                posOthersNights = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_POS_NUIT_SUIVANTE))
-                users.add(Carte(userid, name, image, firstNight, posFirstNight, othersNights, posOthersNights))
+                firstNight = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_NUIT))
+                posFirstNight = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_POS_NUIT))
+                users.add(Carte(userid, name, image, firstNight, posFirstNight))
                 cursor.moveToNext()
             }
         }
@@ -146,10 +138,8 @@ class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                     DBContract.UserEntry.COLUMN_ID + " TEXT PRIMARY KEY," +
                     DBContract.UserEntry.COLUMN_NAME + " TEXT," +
                     DBContract.UserEntry.COLUMN_IMAGE + " TEXT, "+
-                    DBContract.UserEntry.COLUMN_PREMIERE_NUIT + " INTEGER, "+
-                    DBContract.UserEntry.COLUMN_POS_PREMIERE_NUIT + " INTEGER, "+
-                    DBContract.UserEntry.COLUMN_NUIT_SUIVANTE + " INTEGER, "+
-                    DBContract.UserEntry.COLUMN_POS_NUIT_SUIVANTE + " INTEGER)"
+                    DBContract.UserEntry.COLUMN_NUIT + " INTEGER, "+
+                    DBContract.UserEntry.COLUMN_POS_NUIT + " INTEGER)"
 
         private val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + DBContract.UserEntry.TABLE_NAME
     }
